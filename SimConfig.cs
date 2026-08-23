@@ -12,18 +12,21 @@ namespace CASurvive
             public readonly CoverType[] suitableSurfaces;
             public readonly float baseSpreadChance;
         }
-
+        public struct LandSettings
+        {
+            public readonly float growModifier;
+        }
         public readonly float fireSpreadChance;
         public readonly float fireExtinguishChance;
         public readonly GrowSettigns grassSettings;
         public readonly GrowSettigns treeSettings;
+
+        public readonly Dictionary<LandType, LandSettings> landSettings;  
     }
     internal static class SimConfig
     {
-        public readonly static float fireSpreadChance = 0.3f;
-        public readonly static float fireExtinguishChance = 0.3f;
 
-        
+        public static SimSettings settings { get; private set; }
 
         public static Dictionary<CoverType, CoverProperty> properties;
         public static Dictionary<CoverType, CoverLogic> logic;
@@ -31,8 +34,11 @@ namespace CASurvive
 
         public static void Initialize()
         {
-            string jsonTemplates = File.ReadAllText("./CoverTemplates.json");
+            string jsonTemplates = File.ReadAllText("./cover_templates.json");
             properties = JsonSerializer.Deserialize<Dictionary<CoverType, CoverProperty>>(jsonTemplates);
+
+            string jsonSettings = File.ReadAllText("./settings.json");
+            settings = JsonSerializer.Deserialize<SimSettings>(jsonSettings);
             
         }
     }
