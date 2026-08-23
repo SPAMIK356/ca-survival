@@ -1,0 +1,20 @@
+﻿{
+  "Empty": {
+    "type": "Empty",
+    "burnable": false,
+    "fireKeepChance": 0,
+    "lightingChance": 0
+  },
+  "Grass": {
+    "type": "Grass",
+    "burnable": true,
+    "fireKeepChance": 0.7,
+    "lightingChance": 0.95
+  },
+  "Tree": {
+    "type": "Tree",
+    "burnable": true,
+    "fireKeepChance": 0.95,
+    "lightingChance": 0.2
+  }
+}
