@@ -10,7 +10,7 @@
   <ProjectExtensions><VisualStudio><UserProperties covertemplates_1json__JsonSchema="./surfaces.schema.json" /></VisualStudio></ProjectExtensions>
 
   <ItemGroup>
-    <None Update="CoverTemplates.json">
+    <None Update="cover_templates.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
