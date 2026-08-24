@@ -9,19 +9,19 @@ namespace CASurvive
     {
         public struct GrowSettigns
         {
-            public readonly CoverType[] suitableSurfaces;
-            public readonly float baseSpreadChance;
+            public CoverType[] suitableSurfaces { get; private set; }
+            public  float baseSpreadChance {get; private set;}
         }
         public struct LandSettings
         {
-            public readonly float growModifier;
+            public float growModifier {get; private set;}
         }
-        public readonly float fireSpreadChance;
-        public readonly float fireExtinguishChance;
-        public readonly GrowSettigns grassSettings;
-        public readonly GrowSettigns treeSettings;
+        public float fireSpreadChance {get; private set;}
+        public float fireExtinguishChance {get; private set;}
+        public GrowSettigns grassSettings {get; private set;}
+        public GrowSettigns treeSettings {get; private set;}
 
-        public readonly Dictionary<LandType, LandSettings> landSettings;  
+        public Dictionary<LandType, LandSettings> landSettings {get; private set;}  
     }
     internal static class SimConfig
     {
