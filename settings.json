@@ -1,0 +1,30 @@
+{
+
+  "fireExtinguishChance": 0.1,
+  "fireSpreadChance": 0.3,
+
+  "grassSettings": {
+    "suitableSurfaces": [
+      "Dirt",
+      "Sand"
+    ],
+    "baseSpreadChance": 0.4
+  },
+  "treeSettings": {
+    "suitableSurfaces": [
+      "Dirt"
+    ],
+    "baseSpreadChance": 0.05
+  },
+  "landSettings": {
+    "Dirt": {
+      "growModifier": 1
+    },
+    "Sand": {
+      "growModifier": 0.5
+    },
+    "Rock": {
+      "growModifier": 0.1
+    }
+  }
+}
