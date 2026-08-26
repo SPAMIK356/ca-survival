@@ -4,13 +4,13 @@ using System.Text;
 using System.Text.Json.Serialization;
 namespace CASurvive
 {
-    enum CoverType
+    public enum CoverType
     {
         Empty,
         Grass,
         Tree
     }
-    internal class CoverProperty
+    public class CoverProperty
     {
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public CoverType type { get; init; }

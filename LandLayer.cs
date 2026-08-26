@@ -4,13 +4,13 @@ using System.Text;
 
 namespace CASurvive
 {
-    enum LandType
+    public enum LandType
     {
         Dirt,
         Rock,
         Sand
     }
-    internal class LandLayer
+    public class LandLayer
     {
         LandType[,] land;
 
