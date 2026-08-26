@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CASurvive
 {
-    class World
+    public class World
     {
         public LandLayer  landLayer { get; private set; }
         public CoverLayer coverLayer { get; private set; }

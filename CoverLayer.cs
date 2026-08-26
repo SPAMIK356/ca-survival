@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CASurvive
 {
-    internal class CoverLayer
+    public class CoverLayer
     {
         private CoverType[,] cover;
 
