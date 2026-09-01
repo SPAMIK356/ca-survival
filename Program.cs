@@ -1,4 +1,6 @@
-﻿namespace CASurvive
+﻿using CASurvive.ConsoleRenderer;
+
+namespace CASurvive
 {
     internal class Program
     {
@@ -6,6 +8,7 @@
         static void Main(string[] args)
         {
             SimConfig.Initialize();
+            RenderConfig.Initialize();
         }
     }
 }
