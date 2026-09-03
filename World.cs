@@ -9,5 +9,10 @@ namespace CASurvive
         public LandLayer  landLayer { get; private set; }
         public CoverLayer coverLayer { get; private set; }
 
+        public World(LandLayer landLayer)
+        {
+            this.landLayer = landLayer;
+        }
+
     }
 }

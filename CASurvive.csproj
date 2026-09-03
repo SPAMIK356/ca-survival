@@ -7,10 +7,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties land_3grapics_1json__JsonSchema="..\..\С#\CASurvive\surfaces.schema.json" settings_1json__JsonSchema="..\..\С#\CASurvive\surfaces.schema.json" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties settings_1json__JsonSchema="..\..\С#\CASurvive\surfaces.schema.json" /></VisualStudio></ProjectExtensions>
 
   <ItemGroup>
     <None Update="cover_templates.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="land_graphics.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="settings.json">

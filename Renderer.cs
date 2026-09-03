@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,15 +10,6 @@ namespace CASurvive.ConsoleRenderer
 {
 
 
-    /*TODO:
-     *  Закінчити базову логіку рендеру:
-     *      1. Завершити структуру налаштування самого рендеререру
-     *      2. Прописати базову логіку рекурсивного рендеру. Алгоритм:
-     *          а) Починаємо з найверхнього шару
-     *          б) Отримуємо по черзі кожен символ
-     *          в) Якщо він пустий, то спускаємось на один шар 
-     *          г) Повтроюємо допоки не знайдеться символ для рендеру
-     */
     public struct RenderAsset
     {
         public RenderAsset(char sprite, int r, int g, int b)
@@ -54,7 +46,7 @@ namespace CASurvive.ConsoleRenderer
     public abstract class LayerRenderer
     {
 
-
+        public abstract bool CheckOutOfRange(int x, int y);
         public abstract TileMaterial? GetCharacter(int x, int y);
 
     }
@@ -66,8 +58,16 @@ namespace CASurvive.ConsoleRenderer
         {
             this.layer = layer;
         }
+        public override bool CheckOutOfRange(int x, int y)
+        {
+            var dimensions = layer.GetDimensions();
+
+            return x > dimensions.x || x < 0 || y > dimensions.y || y < 0;
+        }
         public override TileMaterial? GetCharacter(int x, int y)
         {
+            if (CheckOutOfRange(x, y)) throw new ArgumentOutOfRangeException();
+
             var tile = layer.GetLandAt(x, y);
 
 
@@ -82,9 +82,16 @@ namespace CASurvive.ConsoleRenderer
 
         public static void Initialize()
         {
+            RenderConfig.landAssets = new();
             string landGraphics = File.ReadAllText("./land_graphics.json");
 
-            landAssets = JsonSerializer.Deserialize<Dictionary<LandType, TileMaterial>>(landGraphics);
+            var landAssets = JsonSerializer.Deserialize<Dictionary<LandType, RenderAsset>>(landGraphics);
+            
+            foreach(var key in landAssets.Keys)
+            {
+                RenderConfig.landAssets.Add(key,
+                    new TileMaterial(landAssets[key]));
+            }
         }
     }
     internal class Renderer
@@ -105,11 +112,14 @@ namespace CASurvive.ConsoleRenderer
             resY = options.y;
 
 
-            layers = new LayerRenderer[2];
+            layers = new LayerRenderer[1];
             layers[0] = new LandLayerRenderer(world.landLayer);
 
         }
-
+        public void SetCamPosition(int x, int y)
+        {
+            camX = x; camY = y;
+        }
         public void Render()
         {
             sb.Clear();
@@ -121,7 +131,7 @@ namespace CASurvive.ConsoleRenderer
                 {
                     var tile = GetTileFor(x, y);
 
-                    sb.Append(tile);
+                    sb.Append(tile.finalSprite);
                 }
                 sb.Append('\n');
             }
@@ -134,26 +144,32 @@ namespace CASurvive.ConsoleRenderer
 
         private TileMaterial GetTileFor(int x, int y)
         {
-            return _GetTileRecursive(layers.Length, x, y);
+            return _GetTileRecursive(layers.Length-1, x, y);
         }
         private TileMaterial _GetTileRecursive(int layerNumber, int x, int y)
         {
-            var tile = layers[layerNumber].GetCharacter(x, y);
+            try
+            {
+                var tile = layers[layerNumber].GetCharacter(x, y);
 
-           
+                if (tile == null)
+                {
+                    if (layerNumber == 0)
+                    {
+                        tile = RenderConfig.emptyTile;
+                    }
+                    else
+                    {
+                        tile = _GetTileRecursive(layerNumber - 1, x, y);
+                    }
+                }
+                return (TileMaterial)tile;
 
-            if(tile == null) { 
-                if(layerNumber == 0)
-                {
-                    tile = RenderConfig.emptyTile;
-                }
-                else
-                {
-                    tile = _GetTileRecursive(layerNumber-1, x, y);
-                }
             }
-
-            return (TileMaterial)tile;
+            catch (ArgumentOutOfRangeException)
+            {
+                return RenderConfig.emptyTile;
+            }
         }
     }
     struct RendererOptions
