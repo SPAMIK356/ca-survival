@@ -62,14 +62,14 @@ namespace CASurvive.ConsoleRenderer
         {
             var dimensions = layer.GetDimensions();
 
-            return x > dimensions.x || x < 0 || y > dimensions.y || y < 0;
+            return x >= dimensions.x || x < 0 || y >= dimensions.y || y < 0;
         }
         public override TileMaterial? GetCharacter(int x, int y)
         {
-            if (CheckOutOfRange(x, y)) throw new ArgumentOutOfRangeException();
+            if (CheckOutOfRange(x, y)) return null;
 
             var tile = layer.GetLandAt(x, y);
-
+            
 
             return RenderConfig.landAssets[tile];
         }
@@ -125,7 +125,7 @@ namespace CASurvive.ConsoleRenderer
             sb.Clear();
 
 
-            for (int y = camY - resY / 2; y < camY + resY / 2; y++)
+            for (int y = camY + resY / 2; y >= camY - resY / 2; y--)
             {
                 for (int x = camX - resX / 2; x < camX + resX / 2; x++)
                 {
@@ -148,28 +148,22 @@ namespace CASurvive.ConsoleRenderer
         }
         private TileMaterial _GetTileRecursive(int layerNumber, int x, int y)
         {
-            try
-            {
-                var tile = layers[layerNumber].GetCharacter(x, y);
 
-                if (tile == null)
+            var tile = layers[layerNumber].GetCharacter(x, y);
+
+            if (tile == null)
+            {
+                if (layerNumber == 0)
                 {
-                    if (layerNumber == 0)
-                    {
-                        tile = RenderConfig.emptyTile;
-                    }
-                    else
-                    {
-                        tile = _GetTileRecursive(layerNumber - 1, x, y);
-                    }
+                    tile = RenderConfig.emptyTile;
                 }
-                return (TileMaterial)tile;
+                else
+                {
+                    tile = _GetTileRecursive(layerNumber - 1, x, y);
+                }
+            }
+            return (TileMaterial)tile;
 
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return RenderConfig.emptyTile;
-            }
         }
     }
     struct RendererOptions

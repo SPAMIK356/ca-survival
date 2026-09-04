@@ -17,8 +17,8 @@ namespace CASurvive
                 {
                     follow = false,
                     world = world,
-                    x = 32,
-                    y = 18
+                    x = 62,
+                    y = 36
                 }
                 );
             renderer.SetCamPosition(0, 0);
